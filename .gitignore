@@ -2,4 +2,3 @@ node_modules
 test*
 build*
 package-lock.json
-skin*.png
