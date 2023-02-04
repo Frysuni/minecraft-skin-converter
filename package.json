@@ -1,0 +1,26 @@
+{
+  "name": "minecraft-skin-converter",
+  "description": "Convert a 64x32 skin to 64x64, restore the alpha channel, define a slim(Alex) skin, and also clear unused areas.",
+  "version": "0.1.0",
+  "author": "Frys",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "lint": "eslint --ext .ts src"
+  },
+  "files": [
+    "build"
+  ],
+  "devDependencies": {
+    "@types/node": "^18.11.18",
+    "@typescript-eslint/eslint-plugin": "^5.50.0",
+    "@typescript-eslint/parser": "^5.50.0",
+    "eslint": "^8.33.0",
+    "typescript": "^4.9.5"
+  },
+  "dependencies": {
+    "canvas": "^2.11.0"
+  }
+}
