@@ -1,8 +1,8 @@
 import { createCanvas, loadImage, Image, CanvasRenderingContext2D, Canvas } from 'canvas';
-import { writeFileSync, existsSync, rmSync, PathLike } from 'fs';
+import Sharp = require('sharp');
+import { getMimeType } from 'stream-mime-type';
 
 export class MinecraftSkinConverter {
-    public data: { dataType: 'mime/png' | 'buffer/png'; data: string | Buffer; slim?: boolean; hd?: boolean; skinpath?: string | URL | Buffer | ArrayBuffer | Uint8Array | Image; };
     public isSlim: boolean;
     private canvas: Canvas;
     private ctx: CanvasRenderingContext2D;
@@ -11,9 +11,17 @@ export class MinecraftSkinConverter {
 
     /**
      * @param skinpath `URL`, `URI` or local filesystem path
+     * @param returnType In what format will the skins be returned.
+     * @param returnType `string(mime)` or `Buffer`. **Only always png.**
      */
-    public async convertSkin(skinpath: string | Buffer, returnType: 'mime/png' | 'buffer/png') {
-        const sourceSkin = await loadImage(skinpath);
+    constructor(
+        private skinpath: string | Buffer,
+        private returnType: 'mime/png' | 'buffer/png'
+    ) {}
+
+
+    public async convertSkin() {
+        const sourceSkin = await loadImage(this.skinpath);
         this.checkSizes(sourceSkin);
 
         const format = this.getFormat(sourceSkin);
@@ -32,11 +40,33 @@ export class MinecraftSkinConverter {
         this.clearUnusedArea(format.square);
 
         let data: string | Buffer;
-        if (returnType == 'mime/png') data = this.canvas.toDataURL('image/png');
-        if (returnType == 'buffer/png') data = this.canvas.toBuffer('image/png');
+        if (this.returnType == 'mime/png') data = this.canvas.toDataURL('image/png');
+        if (this.returnType == 'buffer/png') data = this.canvas.toBuffer('image/png');
 
-        this.data = { slim: this.isSlim, hd: format.hd, skinpath, dataType: returnType, data };
-        return this.data;
+        return { slim: this.isSlim, hd: format.hd, skinpath: this.skinpath, dataType: this.returnType, data };
+    }
+
+    public async getSkinHead(size = 8) {
+        const sourceSkin = await loadImage(this.skinpath);
+        this.checkSizes(sourceSkin);
+
+        const oneHead = sourceSkin.width / 8;
+
+        this.canvas = createCanvas(oneHead, oneHead);
+        this.ctx = this.canvas.getContext('2d');
+
+        const transparentHat = this.getTransparentHat(sourceSkin);
+        this.ctx.drawImage(sourceSkin, -oneHead, -oneHead);
+
+        this.ctx.drawImage(transparentHat, 0, 0);
+
+        const imageBuffer = await Sharp(this.canvas.toBuffer('image/png')).resize(size, size, { kernel: Sharp.kernel.nearest }).toBuffer();
+
+        let data: string | Buffer;
+        if (this.returnType == 'mime/png') data = (await getMimeType(imageBuffer)).mime;
+        if (this.returnType == 'buffer/png') data = imageBuffer;
+
+        return { size, skinpath: this.skinpath, dataType: this.returnType, data };
     }
 
     private checkSizes(image: Image) {
@@ -59,14 +89,57 @@ export class MinecraftSkinConverter {
         return;
     }
 
-    private getFormat(skin: Image) {
+    private getFormat(image: Image) {
         let hd = false;
         let square = false;
 
-        if (skin.width > 64) hd = true;
-        if (skin.width == skin.height) square = true;
+        if (image.width > 64) hd = true;
+        if (image.width == image.height) square = true;
 
-        return { hd, square, abstractScale: skin.width / 16 };
+        return { hd, square, abstractScale: image.width / 16 };
+    }
+
+    private getTransparentHat(sourceSkin: Image) {
+        const oneHead = sourceSkin.width / 8;
+        const canvas = createCanvas(oneHead, oneHead);
+        const ctx = canvas.getContext('2d');
+
+        ctx.drawImage(sourceSkin, oneHead * -5, -oneHead);
+
+        function hasTransparency() {
+            const imgData = ctx.getImageData(0, 0, oneHead, oneHead);
+
+            for (let x = 0; x < oneHead; x++) {
+                for (let y = 0; y < oneHead; y++) {
+                    const offset = (x + y * oneHead) * 4;
+                    if (imgData.data[offset + 3] !== 0xff) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        if (hasTransparency()) return canvas;
+
+        const imgData = ctx.getImageData(0, 0, oneHead, oneHead);
+        for (let x = 0; x < oneHead; x++) {
+            for (let y = 0; y < oneHead; y++) {
+                const offset = (x + y * oneHead) * 4;
+
+                if (imgData.data[offset + 0] === 255 &&
+                    imgData.data[offset + 1] === 255 &&
+                    imgData.data[offset + 2] === 255
+                ) {
+                    imgData.data[offset + 0] = 0;
+                    imgData.data[offset + 1] = 0;
+                    imgData.data[offset + 2] = 0;
+                    imgData.data[offset + 3] = 0;
+                }
+            }
+        }
+        ctx.putImageData(imgData, 0, 0);
+        return canvas;
     }
 
     private fixOpaque(isSquare: boolean) {
@@ -256,23 +329,6 @@ export class MinecraftSkinConverter {
             clearArea(7, 12, 2, 1); // Middle-2 (other)
             clearArea(11, 12, 2, 1); // Middle-3
             clearArea(15, 12, 1, 1); // Right
-        }
-    }
-
-    /**
-     * @param filename node:fs default file path
-     */
-    public writeToFile(filename: PathLike, replaceIfExist = true) {
-        if (existsSync(filename)) {
-            if (replaceIfExist) rmSync(filename);
-            else return;
-        }
-        if (this.data.dataType == 'buffer/png') {
-            writeFileSync(filename, this.data.data);
-        }
-        else {
-            const data = this.canvas.toBuffer('image/png');
-            writeFileSync(filename, data);
         }
     }
 }

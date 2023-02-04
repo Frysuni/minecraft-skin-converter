@@ -10,22 +10,31 @@ npm i minecraft-skin-converter
 
 ## Simple usage:
 ```ts
-import MinecraftSkinConverter from './index';
+import MinecraftSkinConverter from '../index';
 
 async function boot() {
-    const minecraftSkinConverter = new MinecraftSkinConverter();
-    await minecraftSkinConverter.convertSkin('./skin.png', 'buffer/png');
+    const converter = new MinecraftSkinConverter('./skininput.png', 'buffer/png');
 
-    minecraftSkinConverter.writeToFile('./skin_out.png'); // Just write to file
-    minecraftSkinConverter.isSlim; // boolean
-    minecraftSkinConverter.data; // { dataType: 'mime/png' | 'buffer/png'; data: string | Buffer; slim?: boolean; hd?: boolean; skinpath?: string | URL | Buffer | ArrayBuffer | Uint8Array | Image; }
+    await converter.convertSkin();
+    // returns { slim: false, hd: false, skinpath: './skininput.png', dataType: 'buffer/png', data: [Buffer] }
+
+    converter.isSlim;
+    // returns false
+
+    converter.getSkinHead(256);  // 256 is the avatar rescale from 8x8(default) to 256x256
+    // returns { size: 256, skinpath: './skininput.png', dataType: 'buffer/png', data: [Buffer]; }
 }
 
 boot();
+
+// That's all you need to know!
 ```
 
 Input skin:
 ![Input skin image](https://github.com/Frysuni/minecraft-skin-converter/blob/main/example/skininput.png?raw=true)
 
-Expected output skin:
+Output skin:
 ![Output skin image](https://github.com/Frysuni/minecraft-skin-converter/blob/main/example/skinoutput.png?raw=true)
+
+Output head:
+![Output head image](https://github.com/Frysuni/minecraft-skin-converter/blob/main/example/skinheadoutput.png?raw=true)

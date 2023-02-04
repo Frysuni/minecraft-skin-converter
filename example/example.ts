@@ -1,12 +1,16 @@
 import MinecraftSkinConverter from '../index';
 
 async function boot() {
-    const minecraftSkinConverter = new MinecraftSkinConverter();
-    await minecraftSkinConverter.convertSkin('skininput.png', 'buffer/png');
+    const converter = new MinecraftSkinConverter('./skininput.png', 'buffer/png');
 
-    minecraftSkinConverter.writeToFile('skinoutput.png'); // Just write to file
-    minecraftSkinConverter.isSlim; // boolean
-    minecraftSkinConverter.data; // { dataType: 'mime/png' | 'buffer/png'; data: string | Buffer; slim?: boolean; hd?: boolean; skinpath?: string | URL | Buffer | ArrayBuffer | Uint8Array | Image; }
+    await converter.convertSkin();
+    // returns { slim: false, hd: false, skinpath: './skininput.png', dataType: 'buffer/png', data: [Buffer] }
+
+    converter.isSlim;
+    // returns false
+
+    await converter.getSkinHead(256);  // 256 is the avatar rescale from 8x8(default) to 256x256
+    // returns { size: 256, skinpath: './skininput.png', dataType: 'buffer/png', data: [Buffer]; }
 }
 
 boot();
