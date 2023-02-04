@@ -1,8 +1,14 @@
+[![NPM Package](https://img.shields.io/npm/v/minecraft-skin-converter)](https://www.npmjs.com/package/minecraft-skin-converter)
+
 # Minecraft skin converter
 #### This package allows you to convert a 64x32 skin to 64x64, restore the alpha channel, define a slim(Alex) skin, and also clear unused areas. The package also supports HD format skins. It's ES6 import/export.
 ---
+## Installation:
+```
+npm i minecraft-skin-converter
+```
 
-Simple usage:
+## Simple usage:
 ```ts
 import MinecraftSkinConverter from './index';
 

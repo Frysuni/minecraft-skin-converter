@@ -1,7 +1,7 @@
 {
   "name": "minecraft-skin-converter",
   "description": "Convert a 64x32 skin to 64x64, restore the alpha channel, define a slim(Alex) skin, and also clear unused areas.",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "author": "Frys",
   "main": "build/index.js",
   "types": "build/index.d.ts",
@@ -22,5 +22,12 @@
   },
   "dependencies": {
     "canvas": "^2.11.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Frysuni/minecraft-skin-converter.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Frysuni/minecraft-skin-converter/issues"
   }
 }
