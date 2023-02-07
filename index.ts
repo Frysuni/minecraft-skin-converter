@@ -291,9 +291,12 @@ export class MinecraftSkinConverter {
         let isSlimPercent = 0;
         isUnusedArea(50, 16, 2, 4) ? isSlimPercent++ : null;     // Right arm top
         isUnusedArea(54, 20, 2, 12) ? isSlimPercent += 2 : null; // Right arm side
-        isUnusedArea(42, 48, 2, 4) ? isSlimPercent++ : null;     // Left arm top
-        isUnusedArea(46, 52, 2, 12) ? isSlimPercent += 2 : null; // Left arm side
-        if (isSlimPercent >= 4) return true;
+        if (this.isSlim) {
+            isUnusedArea(42, 48, 2, 4) ? isSlimPercent++ : null;     // Left arm top
+            isUnusedArea(46, 52, 2, 12) ? isSlimPercent += 2 : null; // Left arm side
+        }
+        if (this.isSlim && isSlimPercent >= 4) return true;
+        if (!this.isSlim && isSlimPercent >= 2) return true;
 
         return false;
     }
