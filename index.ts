@@ -2,6 +2,8 @@ import { createCanvas, loadImage, Image, CanvasRenderingContext2D, Canvas } from
 import Sharp = require('sharp');
 import { getMimeType } from 'stream-mime-type';
 
+type skinHeadSizeType =  8 | 16 | 32 | 64 | 128 | 256 | 512 | 1024 | 2048 | 4096 | 8128;
+
 export class MinecraftSkinConverter {
     public isSlim: boolean;
     private canvas: Canvas;
@@ -17,11 +19,14 @@ export class MinecraftSkinConverter {
     constructor(
         private skinpath: string | Buffer,
         private returnType: 'mime/png' | 'buffer/png'
-    ) {}
+    ) {
+        if (typeof this.skinpath != 'string' && !Buffer.isBuffer(skinpath)) throw 'MINECRAFT-SKIN-CONVERTER: skinpath must be type of string or Buffer';
+        if (this.returnType != 'buffer/png' && this.returnType != 'mime/png') throw 'MINECRAFT-SKIN-CONVERTER: returnType must be "buffer/png" or "mime/png"';
+    }
 
 
     public async convertSkin() {
-        const sourceSkin = await loadImage(this.skinpath);
+        const sourceSkin = await loadImage(this.skinpath).catch(e => { throw 'MINECRAFT-SKIN-CONVERTER: unexpected error while loading the image: ' + e; });
         this.checkSizes(sourceSkin);
 
         const format = this.getFormat(sourceSkin);
@@ -46,7 +51,9 @@ export class MinecraftSkinConverter {
         return { slim: this.isSlim, hd: format.hd, skinpath: this.skinpath, dataType: this.returnType, data };
     }
 
-    public async getSkinHead(size = 8) {
+    public async getSkinHead(size: skinHeadSizeType = 8) {
+        if (size < 8) throw 'MINECRAFT-SKIN-CONVERTER: the size of the head must be equal to or more than eight';
+
         const sourceSkin = await loadImage(this.skinpath);
         this.checkSizes(sourceSkin);
 
@@ -74,7 +81,7 @@ export class MinecraftSkinConverter {
             image.naturalWidth != image.width ||
             image.naturalHeight != image.height
         ) {
-            throw 'The natural size of the image is not equal to the size of the attribute.';
+            throw 'MINECRAFT-SKIN-CONVERTER: The natural size of the image is not equal to the size of the attribute.';
         }
 
         if (
@@ -83,7 +90,7 @@ export class MinecraftSkinConverter {
             image.height / 32 % 1 != 0 ||
             (image.width != image.height && image.width / image.height != 2)
         ) {
-            throw `Wrong image size. Recived: ${image.width}x${image.height}`;
+            throw `MINECRAFT-SKIN-CONVERTER: Wrong image size. Recived: ${image.width}x${image.height}`;
         }
 
         return;
