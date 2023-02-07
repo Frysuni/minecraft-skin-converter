@@ -5,6 +5,8 @@
 # Minecraft skin converter
 #### This package allows you to convert a 64x32 skin to 64x64, restore the alpha channel, define a slim(Alex) skin, and also clear unused areas. The package also supports HD format skins. It's ES5 import/export, but also contains default import for ES6.
 #### It supports hd skins, jpg skins, new format skins for input. The output skin will always be of the same format as shown in the example.
+
+#### **Warning! The definition of slim skins may be inaccurate due to poor-quality skin sources, although I did it as accurately as possible. Use this only as an auxiliary skin detection tool and give the choice to the person.**
 ---
 ## Installation:
 ```
