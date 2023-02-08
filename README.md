@@ -1,9 +1,5 @@
-<p style="margin: 0px; padding: 0px;">
-    <a href="https://www.npmjs.com/package/minecraft-skin-converter" target="_blank">
-        <img src="https://img.shields.io/npm/types/minecraft-skin-converter?color=blue&label=language" style="display: inline-block; margin: 0px; padding: 0px; margin-right: 10px;">
-        ![](https://komarev.com/ghpvc/?username=minecraft-skin-converter&color=blue&label=views)
-    </a>
-</p>
+[![](https://komarev.com/ghpvc/?username=minecraft-skin-converter&color=blue&label=views)](https://www.npmjs.com/package/minecraft-skin-converter)
+[![](https://img.shields.io/npm/types/minecraft-skin-converter?color=blue&label=language)](https://www.npmjs.com/package/minecraft-skin-converter)
 <p style="margin: 0px; padding: 0px;">
     <a href="https://www.npmjs.com/package/minecraft-skin-converter" target="_blank">
         <img src="https://img.shields.io/npm/v/minecraft-skin-converter?color=red&label=version" style="display: inline-block; margin: 0px; padding: 0px; margin-right: 10px;">
