@@ -1,6 +1,6 @@
-![downloads badge](https://img.shields.io/npm/dt/minecraft-skin-converter?color=blue&label=downloads)
-![types badge](https://img.shields.io/npm/types/minecraft-skin-converter?color=blue)
-![version badge](https://img.shields.io/npm/v/minecraft-skin-converter?color=blue&label=version)
+[![](https://img.shields.io/npm/dt/minecraft-skin-converter?color=blue&label=downloads)](https://www.npmjs.com/package/minecraft-skin-converter)\n
+[![](https://img.shields.io/npm/types/minecraft-skin-converter?color=blue)](https://www.npmjs.com/package/minecraft-skin-converter)\n
+[![](https://img.shields.io/npm/v/minecraft-skin-converter?color=blue&label=version)](https://www.npmjs.com/package/minecraft-skin-converter)\n
 
 # Minecraft skin converter
 #### This package allows you to convert a 64x32 skin to 64x64, restore the alpha channel, define a slim(Alex) skin, and also clear unused areas. The package also supports HD format skins. It's ES5 import/export, but also contains default import for ES6.
