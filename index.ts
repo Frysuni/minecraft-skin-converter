@@ -253,11 +253,14 @@ export class MinecraftSkinConverter {
         // eslint-disable-next-line @typescript-eslint/no-this-alias
         const that = this;
 
-        function isUnusedArea(x0: number, y0: number, w: number, h: number) {
-            x0 *= (that.abstractScale / 4);
-            y0 *= (that.abstractScale / 4);
-            w *= (that.abstractScale / 4);
-            h *= (that.abstractScale / 4);
+        function isUnusedArea(data: number[], resultObject: { totalPixels: number; pixelsThatAreTransparent: number; pixelsThatAreBlack: number; pixelsThatAreWhite: number; }) {
+
+            const
+                x0 = data[0] * that.abstractScale,
+                y0 = data[1] * that.abstractScale,
+                w = data[2] * that.abstractScale,
+                h = data[3] * that.abstractScale
+            ;
 
             const imgData = that.ctx.getImageData(x0, y0, w, h);
 
@@ -285,23 +288,31 @@ export class MinecraftSkinConverter {
                 }
             }
 
-            if (
-                totalPixels == pixelsThatAreTransparent ||
-                totalPixels == pixelsThatAreBlack ||
-                totalPixels == pixelsThatAreWhite
-            ) return true;
-            return false;
+            resultObject.totalPixels += totalPixels;
+            resultObject.pixelsThatAreTransparent += pixelsThatAreTransparent;
+            resultObject.pixelsThatAreBlack += pixelsThatAreBlack;
+            resultObject.pixelsThatAreWhite += pixelsThatAreWhite;
         }
 
-        let isSlimPercent = 0;
-        isUnusedArea(50, 16, 2, 4) ? isSlimPercent++ : null;     // Right arm top
-        isUnusedArea(54, 20, 2, 12) ? isSlimPercent += 2 : null; // Right arm side
+        const slimTestResults = {
+            totalPixels: 0,
+            pixelsThatAreTransparent: 0,
+            pixelsThatAreBlack: 0,
+            pixelsThatAreWhite: 0
+        };
+
+        isUnusedArea(UnusedAreas.Slim.RightArm.Top, slimTestResults);
+        isUnusedArea(UnusedAreas.Slim.RightArm.Side, slimTestResults);
         if (this.isSlim) {
-            isUnusedArea(42, 48, 2, 4) ? isSlimPercent++ : null;     // Left arm top
-            isUnusedArea(46, 52, 2, 12) ? isSlimPercent += 2 : null; // Left arm side
+            isUnusedArea(UnusedAreas.Slim.LeftArm.Top, slimTestResults);
+            isUnusedArea(UnusedAreas.Slim.LeftArm.Side, slimTestResults);
         }
-        if (this.isSlim && isSlimPercent >= 4) return true;
-        if (!this.isSlim && isSlimPercent >= 2) return true;
+
+        if (
+            slimTestResults.pixelsThatAreTransparent > slimTestResults.totalPixels / 1.1 ||
+            slimTestResults.pixelsThatAreBlack > slimTestResults.totalPixels / 1.1 ||
+            slimTestResults.pixelsThatAreWhite > slimTestResults.totalPixels / 1.1
+        ) return true;
 
         return false;
     }
@@ -378,12 +389,12 @@ const UnusedAreas = {
     },
     Slim: {
         RightArm: {
-            Top: [50 * 0.125, 16 * 0.125, 2 * 0.125, 4 * 0.125],
-            Side: [54 * 0.125, 20 * 0.125, 2 * 0.125, 12 * 0.125]
+            Top: [50 * 0.25, 16 * 0.25, 2 * 0.25, 4 * 0.25],
+            Side: [54 * 0.25, 20 * 0.25, 2 * 0.25, 12 * 0.25]
         },
         LeftArm: {
-            Top: [42 * 0.125, 48 * 0.125, 2 * 0.125, 4 * 0.125],
-            Side: [46 * 0.125, 52 * 0.125, 2 * 0.125, 12 * 0.125]
+            Top: [42 * 0.25, 48 * 0.25, 2 * 0.25, 4 * 0.25],
+            Side: [46 * 0.25, 52 * 0.25, 2 * 0.25, 12 * 0.25]
         }
     }
 };
