@@ -1,16 +1,15 @@
+[![](https://komarev.com/ghpvc/?username=minecraft-skin-converter&color=white&label=views)](https://www.npmjs.com/package/minecraft-skin-converter)
+<p style="margin: 0px; padding: 0px;">
+    <a href="https://www.npmjs.com/package/minecraft-skin-converter" target="_blank">
+        <img src="https://img.shields.io/npm/types/minecraft-skin-converter?color=blue&label=language" style="display: inline-block; margin: 0px; padding: 0px; margin-right: 10px;">
+    </a>
+</p>
 <p style="margin: 0px; padding: 0px;">
     <a href="https://www.npmjs.com/package/minecraft-skin-converter" target="_blank">
         <img src="https://img.shields.io/npm/v/minecraft-skin-converter?color=red&label=version" style="display: inline-block; margin: 0px; padding: 0px; margin-right: 10px;">
         <img src="https://img.shields.io/npm/dt/minecraft-skin-converter?color=red&label=downloads" style="display: inline-block; margin: 0px; padding: 0px;">
     </a>
 </p>
-
-[<p><img src="https://img.shields.io/npm/dt/minecraft-skin-converter?color=blue&label=downloads" style="display: block;"></p>](https://www.npmjs.com/package/minecraft-skin-converter)
-<p><img src="https://img.shields.io/npm/types/minecraft-skin-converter?color=blue" style="display: block;"></p>
-<img src="https://img.shields.io/npm/v/minecraft-skin-converter?color=blue&label=version" style="display: block;">
-[![](https://img.shields.io/npm/dt/minecraft-skin-converter?color=blue&label=downloads)](https://www.npmjs.com/package/minecraft-skin-converter)\n
-[![](https://img.shields.io/npm/types/minecraft-skin-converter?color=blue)](https://www.npmjs.com/package/minecraft-skin-converter)\n
-[![](https://img.shields.io/npm/v/minecraft-skin-converter?color=blue&label=version)](https://www.npmjs.com/package/minecraft-skin-converter)\n
 
 # Minecraft skin converter
 #### This package allows you to convert a 64x32 skin to 64x64, restore the alpha channel, define a slim(Alex) skin, and also clear unused areas. The package also supports HD format skins. It's ES5 import/export, but also contains default import for ES6.
@@ -53,4 +52,3 @@ boot();
 
 // That's all you need to know!
 ```
-Developed by Frys from Russia with love.
