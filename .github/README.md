@@ -1,4 +1,4 @@
-[![](https://komarev.com/ghpvc/?username=minecraft-skin-converter&color=white&label=views)](https://www.npmjs.com/package/minecraft-skin-converter)
+[![](https://komarev.com/ghpvc/?username=minecraft-skin-converter&color=ffffff&label=views)](https://www.npmjs.com/package/minecraft-skin-converter)
 <p style="margin: 0px; padding: 0px;">
     <a href="https://www.npmjs.com/package/minecraft-skin-converter" target="_blank">
         <img src="https://img.shields.io/npm/types/minecraft-skin-converter?color=blue&label=language" style="display: inline-block; margin: 0px; padding: 0px; margin-right: 10px;">
