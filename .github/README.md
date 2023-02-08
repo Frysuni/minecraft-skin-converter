@@ -1,4 +1,4 @@
-[<img src="https://img.shields.io/npm/dt/minecraft-skin-converter?color=blue&label=downloads" style="display: block;">](https://www.npmjs.com/package/minecraft-skin-converter)
+[<p><img src="https://img.shields.io/npm/dt/minecraft-skin-converter?color=blue&label=downloads" style="display: block;"></p>](https://www.npmjs.com/package/minecraft-skin-converter)
 <img src="https://img.shields.io/npm/types/minecraft-skin-converter?color=blue" style="display: block;">
 <img src="https://img.shields.io/npm/v/minecraft-skin-converter?color=blue&label=version" style="display: block;">
 [![](https://img.shields.io/npm/dt/minecraft-skin-converter?color=blue&label=downloads)](https://www.npmjs.com/package/minecraft-skin-converter)\n
