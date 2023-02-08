@@ -212,13 +212,16 @@ export class MinecraftSkinConverter {
         // eslint-disable-next-line @typescript-eslint/no-this-alias
         const that = this;
 
-        function copyArea(startX: number, startY: number, width: number, height: number, destX: number, destY: number) {
-            startX *= that.abstractScale;
-            startY *= that.abstractScale;
-            width *= that.abstractScale;
-            height *= that.abstractScale;
-            destX *= that.abstractScale;
-            destY *= that.abstractScale;
+        function copyArea(data: number[]) {
+
+            const
+                startX = data[0] * that.abstractScale,
+                startY = data[1] * that.abstractScale,
+                width = data[2] * that.abstractScale,
+                height = data[3] * that.abstractScale,
+                destX = data[4] * that.abstractScale,
+                destY = data[5] * that.abstractScale
+            ;
 
             tempCtx.putImageData(that.ctx.getImageData(startX, startY, width, height), 0, 0);
 
@@ -229,18 +232,20 @@ export class MinecraftSkinConverter {
             that.ctx.restore();
         }
 
-        copyArea(1, 4, 1, 1, 5, 12);   // Top Leg
-        copyArea(2, 4, 1, 1, 6, 12);   // Bottom Leg
-        copyArea(0, 5, 1, 3, 6, 13);   // Outer Leg
-        copyArea(1, 5, 1, 3, 5, 13);   // Front Leg
-        copyArea(2, 5, 1, 3, 4, 13);   // Inner Leg
-        copyArea(3, 5, 1, 3, 7, 13);   // Back Leg
-        copyArea(11, 4, 1, 1, 9, 12);  // Top Arm
-        copyArea(12, 4, 1, 1, 10, 12); // Bottom Arm
-        copyArea(10, 5, 1, 3, 10, 13); // Outer Arm
-        copyArea(11, 5, 1, 3, 9, 13);  // Front Arm
-        copyArea(12, 5, 1, 3, 8, 13);  // Inner Arm
-        copyArea(13, 5, 1, 3, 11, 13); // Back Arm
+        copyArea(CopyAreas.Arm.Top);
+        copyArea(CopyAreas.Arm.Bottom);
+        copyArea(CopyAreas.Arm.Outer);
+        copyArea(CopyAreas.Arm.Front);
+        copyArea(CopyAreas.Arm.Inner);
+        copyArea(CopyAreas.Arm.Back);
+
+        copyArea(CopyAreas.Leg.Top);
+        copyArea(CopyAreas.Leg.Bottom);
+        copyArea(CopyAreas.Leg.Outer);
+        copyArea(CopyAreas.Leg.Front);
+        copyArea(CopyAreas.Leg.Inner);
+        copyArea(CopyAreas.Leg.Back);
+
     }
 
     private checkSlim() {
@@ -302,45 +307,103 @@ export class MinecraftSkinConverter {
     }
 
     private clearUnusedArea(isSquare: boolean) {
-        const clearArea = (x: number, y: number, width: number, height: number) => this.ctx.clearRect(x * this.abstractScale, y * this.abstractScale, width * this.abstractScale, height * this.abstractScale);
-        const reduce = 0.125;
+        const clearArea = (data: number[]) => this.ctx.clearRect(data[0] * this.abstractScale, data[1] * this.abstractScale, data[2] * this.abstractScale, data[3] * this.abstractScale);
 
-        // Head+Hat
-        clearArea(0, 0, 2, 2); // Left
-        clearArea(6, 0, 4, 2); // Middle
-        clearArea(14, 0, 2, 2); // Right
+        clearArea(UnusedAreas.HeadHat.Left);
+        clearArea(UnusedAreas.HeadHat.Middle);
+        clearArea(UnusedAreas.HeadHat.Right);
 
-        // Body
-        clearArea(0, 4, 1, 1); // Left
-        clearArea(3, 4, 2, 1); // Middle-1
-        clearArea(9, 4, 2, 1); // Middle-2
-        clearArea(13, 4, 1, 1); // Right
-        clearArea(14, 4, 2, 4); // Right-side
+        clearArea(UnusedAreas.Body.Left);
+        clearArea(UnusedAreas.Body.Middle1);
+        clearArea(UnusedAreas.Body.Middle2);
+        clearArea(UnusedAreas.Body.Right);
+        clearArea(UnusedAreas.Body.RightSide);
 
         if (this.isSlim) {
-            clearArea(50 * reduce, 16 * reduce, 2 * reduce, 4 * reduce);  // Right arm top
-            clearArea(54 * reduce, 20 * reduce, 2 * reduce, 12 * reduce); // Right arm side
-            clearArea(42 * reduce, 48 * reduce, 2 * reduce, 4 * reduce);  // Left arm top
-            clearArea(46 * reduce, 52 * reduce, 2 * reduce, 12 * reduce); // Left arm side
+            clearArea(UnusedAreas.Slim.RightArm.Top);
+            clearArea(UnusedAreas.Slim.RightArm.Side);
         }
 
         if (isSquare) { // if it WAS a square
 
-            // Body 2-nd layer
-            clearArea(0, 8, 1, 1); // Left
-            clearArea(3, 8, 2, 1); // Middle-1
-            clearArea(9, 8, 2, 1); // Middle-2
-            clearArea(13, 8, 1, 1); // Right
-            clearArea(14, 8, 2, 4); // Right-side
+            if (this.isSlim) {
+                clearArea(UnusedAreas.Slim.LeftArm.Top);
+                clearArea(UnusedAreas.Slim.LeftArm.Side);
+            }
 
-            // Skin-bottom
-            clearArea(0, 12, 1, 1); // Left
-            clearArea(3, 12, 2, 1); // Middle-1
-            clearArea(7, 12, 2, 1); // Middle-2 (other)
-            clearArea(11, 12, 2, 1); // Middle-3
-            clearArea(15, 12, 1, 1); // Right
+            clearArea(UnusedAreas.Body2.Left);
+            clearArea(UnusedAreas.Body2.Middle1);
+            clearArea(UnusedAreas.Body2.Middle2);
+            clearArea(UnusedAreas.Body2.Right);
+            clearArea(UnusedAreas.Body2.RightSide);
+
+            clearArea(UnusedAreas.Bottom.Left);
+            clearArea(UnusedAreas.Bottom.Middle1);
+            clearArea(UnusedAreas.Bottom.Middle2);
+            clearArea(UnusedAreas.Bottom.Middle3);
+            clearArea(UnusedAreas.Bottom.Right);
         }
     }
 }
 
 export default MinecraftSkinConverter;
+
+// x, y, widht, height
+const UnusedAreas = {
+    HeadHat: {
+        Left: [0, 0, 2, 2],
+        Middle: [6, 0, 4, 2],
+        Right: [14, 0, 2, 2]
+    },
+    Body: {
+        Left: [0, 4, 1, 1],
+        Middle1: [3, 4, 2, 1],
+        Middle2: [9, 4, 2, 1],
+        Right: [13, 4, 1, 1],
+        RightSide: [14, 4, 2, 4]
+    },
+    Body2: {
+        Left: [0, 8, 1, 1],
+        Middle1: [3, 8, 2, 1],
+        Middle2: [9, 8, 2, 1],
+        Right: [13, 8, 1, 1],
+        RightSide: [14, 8, 2, 4]
+    },
+    Bottom: {
+        Left: [0, 12, 1, 1],
+        Middle1: [3, 12, 2, 1],
+        Middle2: [7, 12, 2, 1],
+        Middle3: [11, 12, 2, 1],
+        Right: [15, 12, 1, 1]
+    },
+    Slim: {
+        RightArm: {
+            Top: [50 * 0.125, 16 * 0.125, 2 * 0.125, 4 * 0.125],
+            Side: [54 * 0.125, 20 * 0.125, 2 * 0.125, 12 * 0.125]
+        },
+        LeftArm: {
+            Top: [42 * 0.125, 48 * 0.125, 2 * 0.125, 4 * 0.125],
+            Side: [46 * 0.125, 52 * 0.125, 2 * 0.125, 12 * 0.125]
+        }
+    }
+};
+
+// startX, startY, widht, height, destX, destY
+const CopyAreas = {
+    Arm: {
+        Top: [11, 4, 1, 1, 9, 12],
+        Bottom: [12, 4, 1, 1, 10, 12],
+        Outer: [10, 5, 1, 3, 10, 13],
+        Front: [11, 5, 1, 3, 9, 13],
+        Inner: [12, 5, 1, 3, 8, 13],
+        Back: [13, 5, 1, 3, 11, 13]
+    },
+    Leg: {
+        Top: [1, 4, 1, 1, 5, 12],
+        Bottom: [2, 4, 1, 1, 6, 12],
+        Outer: [0, 5, 1, 3, 6, 13],
+        Front: [1, 5, 1, 3, 5, 13],
+        Inner: [2, 5, 1, 3, 4, 13],
+        Back: [3, 5, 1, 3, 7, 13]
+    }
+};
