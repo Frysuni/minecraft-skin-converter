@@ -36,7 +36,7 @@ async function test(number: number, setup = false) {
     if (JSON.stringify(head) != expectedHead.toString()) {
         console.log(`Error in test ${number}.`);
         console.log('------------------');
-        console.log('Output head:', skin);
+        console.log('Output head:', head);
         console.log('------------------');
         console.log('Expected head output:', JSON.parse(expectedHead.toString()));
         process.exit();
