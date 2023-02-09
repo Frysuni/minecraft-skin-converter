@@ -4,7 +4,7 @@ import MinecraftSkinConverter from '../index';
 
 async function boot() {
     const converter = new MinecraftSkinConverter('./skininput.png', 'buffer/png');
-    // or 'mime/png' for the mime data type
+    // or 'base64/png' for the base64 data type
 
     await converter.convertSkin().catch(console.error);
     // returns { slim: false, hd: false, skinpath: './skininput.png', dataType: 'buffer/png', data: [Buffer] }

@@ -1,6 +1,5 @@
 import { createCanvas, loadImage, Image, CanvasRenderingContext2D, Canvas } from 'canvas';
 import Sharp = require('sharp');
-import { getMimeType } from 'stream-mime-type';
 
 type skinHeadSizeType =  8 | 16 | 32 | 64 | 128 | 256 | 512 | 1024 | 2048 | 4096 | 8128;
 
@@ -14,14 +13,14 @@ export class MinecraftSkinConverter {
     /**
      * @param skinpath `URL`, `URI` or local filesystem path
      * @param returnType In what format will the skins be returned.
-     * @param returnType `string(mime)` or `Buffer`. **Only always png.**
+     * @param returnType `string(base64)` or `Buffer`. **Only always png.**
      */
     constructor(
         private skinpath: string | Buffer,
-        private returnType: 'mime/png' | 'buffer/png'
+        private returnType: 'base64/png' | 'buffer/png'
     ) {
         if (typeof this.skinpath != 'string' && !Buffer.isBuffer(skinpath)) throw 'MINECRAFT-SKIN-CONVERTER: skinpath must be type of string or Buffer';
-        if (this.returnType != 'buffer/png' && this.returnType != 'mime/png') throw 'MINECRAFT-SKIN-CONVERTER: returnType must be "buffer/png" or "mime/png"';
+        if (this.returnType != 'buffer/png' && this.returnType != 'base64/png') throw 'MINECRAFT-SKIN-CONVERTER: returnType must be "buffer/png" or "base64/png"';
     }
 
 
@@ -45,7 +44,7 @@ export class MinecraftSkinConverter {
         this.clearUnusedArea(format.square);
 
         let data: string | Buffer;
-        if (this.returnType == 'mime/png') data = this.canvas.toDataURL('image/png');
+        if (this.returnType == 'base64/png') data = this.canvas.toDataURL('image/png');
         if (this.returnType == 'buffer/png') data = this.canvas.toBuffer('image/png');
 
         return { slim: this.isSlim, hd: format.hd, skinpath: this.skinpath, dataType: this.returnType, data };
@@ -70,7 +69,7 @@ export class MinecraftSkinConverter {
         const imageBuffer = await Sharp(this.canvas.toBuffer('image/png')).resize(size, size, { kernel: Sharp.kernel.nearest }).toBuffer();
 
         let data: string | Buffer;
-        if (this.returnType == 'mime/png') data = (await getMimeType(imageBuffer)).mime;
+        if (this.returnType == 'base64/png') data = 'data:image/png;base64,' + imageBuffer.toString('base64');
         if (this.returnType == 'buffer/png') data = imageBuffer;
 
         return { size, skinpath: this.skinpath, dataType: this.returnType, data };

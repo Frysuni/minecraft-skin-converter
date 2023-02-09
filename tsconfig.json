@@ -1,5 +1,5 @@
 {
-  "include": ["*.ts"],
+  "include": ["index.ts"],
   "exclude": ["node_modules", "test*", "build"],
 
   "compilerOptions": {
@@ -10,11 +10,11 @@
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "target": "ES6",
-    "sourceMap": true,
+    "sourceMap": false,
     "outDir": "./build",
     "baseUrl": ".",
     "esModuleInterop": true,
-    "incremental": true,
+    "incremental": false,
     "skipLibCheck": true,
     "strictNullChecks": false,
     "noImplicitAny": false,
