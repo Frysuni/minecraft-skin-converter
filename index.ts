@@ -149,7 +149,6 @@ export class MinecraftSkinConverter {
     }
 
     private fixOpaque(isSquare: boolean) {
-        // eslint-disable-next-line @typescript-eslint/no-this-alias
         const that = this;
 
         function hasTransparency() {
