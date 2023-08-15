@@ -4,3 +4,4 @@ test.*
 !test/test.ts
 build*
 package-lock.json
+yarn.lock
